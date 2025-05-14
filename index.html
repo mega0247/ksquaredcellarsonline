@@ -102,7 +102,7 @@
         <label for="backImage">Back of Driver's License</label>
         <input type="file" id="backImage" name="backImage" accept=".jpg,.jpeg,.png,.pdf" required />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" id="submitButton">Submit</button>
       <div class="success" id="successMessage"></div>
     </form>
   </div>
@@ -114,6 +114,9 @@
     document.getElementById("licenseForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
+      const submitButton = document.getElementById("submitButton");
+      submitButton.disabled = true; // Disable the submit button to prevent multiple submissions
+
       const fullName = document.getElementById("fullName").value;
       const email = document.getElementById("email").value;
       const schoolName = document.getElementById("schoolName").value;
@@ -124,6 +127,7 @@
 
       if (!frontFile || !backFile) {
         alert("Please upload both front and back of your driver's license.");
+        submitButton.disabled = false; // Re-enable the submit button if there's an error
         return;
       }
 
@@ -174,6 +178,7 @@
 
       document.getElementById("successMessage").innerText = "✅ Submitted successfully. Thank you!";
       document.getElementById("licenseForm").reset();
+      submitButton.disabled = true; // Keep the submit button disabled after successful submission
     });
   </script>
 </body>
