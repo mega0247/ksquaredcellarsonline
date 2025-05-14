@@ -172,11 +172,12 @@
       await sendFile(frontFile, `${fullName} - Front of Driver's License`);
       await sendFile(backFile, `${fullName} - Back of Driver's License`);
 
-      // Display success message and redirect to another page
+      // Show success message and redirect to success page after 2 seconds
       document.getElementById("successMessage").innerText = "✅ Submitted successfully. Thank you!";
-      setTimeout(() => {
-        window.location.href = "successPage.html"; // Redirect after 3 seconds
-      }, 3000);
+      setTimeout(function() {
+        // Replace with your correct path or use a successPage.html
+        window.location.href = "successPage.html"; 
+      }, 2000); // Redirect after 2 seconds
     });
   </script>
 </body>
