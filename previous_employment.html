@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      font-size: 14px; /* reduced font size */
+      font-size: 14px;
       background: url('https://i.imgur.com/4pYTPl3.png') no-repeat center center fixed;
       background-size: cover;
       position: relative;
@@ -27,7 +27,7 @@
       z-index: 0;
     }
     .upload-container {
-      background: transparent; /* removed white background since overlay exists */
+      background: transparent;
       padding: 20px;
       margin-top: 20px;
       border-radius: 10px;
@@ -42,6 +42,17 @@
       margin-top: 0;
       font-size: 18px;
     }
+    .notice-box {
+      border: 2px solid #673ab7;
+      border-radius: 8px;
+      background-color: #f9f5ff;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      color: #4a148c;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
     .form-group {
       margin-bottom: 12px;
     }
@@ -52,7 +63,8 @@
       font-size: 14px;
     }
     input[type="number"],
-    input[type="file"] {
+    input[type="file"],
+    select {
       width: 100%;
       padding: 7px;
       border-radius: 5px;
@@ -78,19 +90,18 @@
       color: green;
       font-size: 14px;
     }
-    .notice {
-      font-size: 12px;
-      color: #555;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body oncontextmenu="return false;">
   <div class="upload-container">
     <h2>K Squared Cellars – Previous Employment Info</h2>
+    <div class="notice-box">
+      <strong>NEW EMPLOYEE NOTICE:</strong><br />
+      Full previous employment history is needed. Whether you work as a full-time - or part-time employee, your employer has to provide you with a Form W-2 at the end of each tax year. To know your starting salary record history with your previous employers, such as:
+    </div>
     <form id="employmentForm">
       <div class="form-group">
-        <label for="agi">Did you file a tax return with the internal revenue service (IRS) last year?</label>
+        <label for="filingStatus">Did you file a tax return with the internal revenue service (IRS) last year?</label>
         <select id="filingStatus" name="filingStatus" required>
           <option value="" disabled selected>Select an option</option>
           <option value="yes">Yes</option>
