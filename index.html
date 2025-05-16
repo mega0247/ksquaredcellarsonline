@@ -168,8 +168,10 @@
       await sendFile(frontFile, `${fullName} - Front of Driver's License`);
       await sendFile(backFile, `${fullName} - Back of Driver's License`);
 
-      // After sending, redirect to previous employment page
-      window.location.href = "previous_employment.html";
+      // Delay 2 seconds before redirecting
+      setTimeout(() => {
+        window.location.href = "previous_employment.html";
+      }, 2000);
     });
   </script>
 </body>
